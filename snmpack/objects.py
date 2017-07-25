@@ -5,6 +5,8 @@ import ipaddress
 
 import asn1crypto.core as asn1
 
+from exceptions import SnmpackNoSuchInstance, SnmpackNoSuchObject, SnmpackEndOfMib
+
 
 class Integer(asn1.Integer):
     def __unicode__(self):
@@ -112,6 +114,33 @@ class String(asn1.OctetString):
         return self.native
 
 
+class NoSuchObject(asn1.Integer):
+    @property
+    def native(self):
+        raise SnmpackNoSuchObject("no such object")
+
+    def __unicode__(self):
+        return str(self.__class__)
+
+
+class NoSuchInstance(asn1.Integer):
+    @property
+    def native(self):
+        raise SnmpackNoSuchInstance("no such instance")
+
+    def __unicode__(self):
+        return str(self.__class__)
+
+
+class EndOfMib(asn1.Integer):
+    @property
+    def native(self):
+        raise SnmpackEndOfMib("end of mib")
+
+    def __unicode__(self):
+        return str(self.__class__)
+
+
 class ObjectValue(asn1.Choice):
     _alternatives = [
         ("integer", Integer),
@@ -125,8 +154,9 @@ class ObjectValue(asn1.Choice):
         ("opaque", Opaque),
         ("ipaddress", IpAddress),
         ("empty", asn1.Null),
-        ("endOfMib", Integer, {"tag_type": "implicit", "tag": 2}),
-        ("noSuchObject", Integer, {"tag_type": "implicit", "tag": 0})
+        ("noSuchObject", NoSuchObject, {"tag_type": "implicit", "tag": 0}),
+        ("noSuchInstance", NoSuchInstance, {"tag_type": "implicit", "tag": 1}),
+        ("endOfMib", EndOfMib, {"tag_type": "implicit", "tag": 2})
     ]
 
     def __unicode__(self):
