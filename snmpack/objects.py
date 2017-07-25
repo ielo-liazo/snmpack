@@ -5,7 +5,8 @@ import ipaddress
 
 import asn1crypto.core as asn1
 
-from exceptions import SnmpackNoSuchInstance, SnmpackNoSuchObject, SnmpackEndOfMib
+from snmpack.snmpack.exceptions import SnmpackNoSuchInstance, \
+    SnmpackNoSuchObject, SnmpackEndOfMib
 
 
 class Integer(asn1.Integer):

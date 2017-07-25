@@ -2,7 +2,7 @@
 
 import random
 
-import snmp.objects as obj
+import snmpack.snmpack.objects as obj
 
 
 class SNMPRequest(object):

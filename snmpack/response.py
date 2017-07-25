@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import snmp.objects as obj
+import snmpack.snmpack.objects as obj
 
 
 class SNMPResponse(object):
