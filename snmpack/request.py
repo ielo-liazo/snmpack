@@ -4,6 +4,8 @@ import random
 
 import snmpack.snmpack.objects as obj
 
+from snmpack.snmpack.exceptions import SnmpackInvalidOid
+
 
 class SNMPRequest(object):
     def __init__(self, rtype, root, oid=[], name=[], max_rep=10, **host):
@@ -48,7 +50,12 @@ class SNMPRequest(object):
 
         for oid in self.oid:
             vb = obj.VarBind()
-            vb["name"] = obj.ObjectName(oid)
+
+            try:
+                vb["name"] = obj.ObjectName(oid)
+            except ValueError as e:
+                raise SnmpackInvalidOid
+
             vb["value"] = obj.ObjectValue("empty")
 
             vb_list.append(vb)
