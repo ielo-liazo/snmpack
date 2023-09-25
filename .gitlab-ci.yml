@@ -1,0 +1,42 @@
+image: python:3.11
+stages:
+  - style
+  - type
+  - test
+
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/topics/caching/
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - python --version ; pip --version  # For debugging
+
+style:
+  stage: style
+  script:
+    - pip install --editable ".[dev]"
+    - black --check snmpack
+    - ruff check snmpack
+
+types:
+  stage: type
+  script:
+    - pip install -e ".[dev]"
+    - mypy snmpack
+
+tests:
+  stage: test
+  image: python:$PYTHON_VERSIONS
+  parallel:
+    matrix:
+      - PYTHON_VERSIONS: [ "3.10", "3.11", "3.12" ]
+  script:
+    - pip install -e ".[test]"
+    - pytest

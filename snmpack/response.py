@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import snmpack.snmpack.objects as obj
+from snmpack.objects import Message
 
 
-class SNMPResponse(object):
+class SNMPResponse:
     def __init__(self, data):
-        self.parsed = obj.Message.load(data)
+        self.parsed = Message.load(data)
         self.pdu = self.parsed["data"].chosen
 
     @property

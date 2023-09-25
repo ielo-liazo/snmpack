@@ -1,0 +1,59 @@
+[project]
+name = "snmpack"
+description = ""
+readme = "README.md"
+license = { "text" = "MIT" }
+requires-python = ">=3.10"
+maintainers = [
+    { "name" = "Thibault Terrasson", "email" = "thibault.terrasson@ielo.net" },
+    { "name" = "Rémi Desgrange", "email" = "remi.desgrange@ielo.net" }
+]
+
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Network Engineering",
+]
+dependencies = [
+    "asn1crypto",
+]
+dynamic = ["version"]
+[project.urls]
+Homepage = "https://github.com/ielo-liazo/snmpack"
+Tracker = "https://github.com/ielo-liazo/snmpack/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "freezegun",
+    "faker"
+]
+dev = [
+    "mypy",
+    "black",
+    "ruff",
+    "pre-commit"
+]
+all = ["snmpack[dev,test]"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true # if any libs don't have stubs or actual types.
+
+
+[tool.ruff]
+line-length = 120
+exclude = ["snmpack/tests"]
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+
+[tool.pytest.ini_options]
+testpaths = ["snmpack/tests"]

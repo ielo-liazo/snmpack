@@ -2,12 +2,12 @@
 
 import random
 
-import snmpack.snmpack.objects as obj
+from snmpack.objects import Message, PDUs, Version, Community, VarBindList, ObjectName, VarBind, ObjectValue
 
-from snmpack.snmpack.exceptions import SnmpackInvalidOid
+from snmpack.exceptions import SnmpackInvalidOid
 
 
-class SNMPRequest(object):
+class SNMPRequest:
     def __init__(self, rtype, root, oid=[], name=[], max_rep=10, **host):
         self.rtype = rtype
         self.root = root
@@ -15,8 +15,8 @@ class SNMPRequest(object):
         self.host = host
         self.max_rep = max_rep
         self.oid = oid if not isinstance(oid, str) else [oid]
-        self.pdu = obj.PDUs(self.rtype)
-        self.msg = obj.Message()
+        self.pdu = PDUs(self.rtype)
+        self.msg = Message()
 
     @property
     def req_id(self):
@@ -46,17 +46,17 @@ class SNMPRequest(object):
             self.pdu.chosen["error_status"] = 0
             self.pdu.chosen["error_index"] = 0
 
-        vb_list = obj.VarBindList()
+        vb_list = VarBindList()
 
         for oid in self.oid:
-            vb = obj.VarBind()
+            vb = VarBind()
 
             try:
-                vb["name"] = obj.ObjectName(oid)
-            except ValueError as e:
+                vb["name"] = ObjectName(oid)
+            except ValueError:
                 raise SnmpackInvalidOid
 
-            vb["value"] = obj.ObjectValue("empty")
+            vb["value"] = ObjectValue("empty")
 
             vb_list.append(vb)
 
@@ -64,9 +64,9 @@ class SNMPRequest(object):
 
         return self.pdu
 
-    def build(self, req_id=None):
-        self.msg["version"] = obj.Version(self.host["version"])
-        self.msg["community"] = obj.Community(self.host["community"].encode())
+    def build(self, req_id=None) -> Message:
+        self.msg["version"] = Version(self.host["version"])
+        self.msg["community"] = Community(self.host["community"].encode())
         self.msg["data"] = self.build_pdu(req_id=req_id)
 
         return self.msg
