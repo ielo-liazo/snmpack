@@ -3,7 +3,7 @@ name = "snmpack"
 description = ""
 readme = "README.md"
 license = { "text" = "MIT" }
-requires-python = ">=3.10"
+requires-python = ">=3.7"
 maintainers = [
     { "name" = "Thibault Terrasson", "email" = "thibault.terrasson@ielo.net" },
     { "name" = "Rémi Desgrange", "email" = "remi.desgrange@ielo.net" }
@@ -24,7 +24,7 @@ classifiers = [
 dependencies = [
     "asn1crypto",
 ]
-#dynamic = ["version"]
+
 [project.urls]
 Homepage = "https://github.com/ielo-liazo/snmpack"
 Tracker = "https://github.com/ielo-liazo/snmpack/issues"
@@ -54,7 +54,7 @@ exclude = ["snmpack/tests"]
 
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ['py311']
 
 [tool.pytest.ini_options]
 testpaths = ["snmpack/tests"]
