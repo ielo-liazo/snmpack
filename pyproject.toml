@@ -8,6 +8,7 @@ maintainers = [
     { "name" = "Thibault Terrasson", "email" = "thibault.terrasson@ielo.net" },
     { "name" = "Rémi Desgrange", "email" = "remi.desgrange@ielo.net" }
 ]
+version = "1.0.0"
 
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -23,7 +24,7 @@ classifiers = [
 dependencies = [
     "asn1crypto",
 ]
-dynamic = ["version"]
+#dynamic = ["version"]
 [project.urls]
 Homepage = "https://github.com/ielo-liazo/snmpack"
 Tracker = "https://github.com/ielo-liazo/snmpack/issues"
