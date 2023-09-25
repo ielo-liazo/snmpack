@@ -36,7 +36,7 @@ tests:
   image: python:$PYTHON_VERSIONS
   parallel:
     matrix:
-      - PYTHON_VERSIONS: [ "3.10", "3.11", "3.12" ]
+      - PYTHON_VERSIONS: [ "3.10", "3.11", "3.12-rc" ]
   script:
     - pip install -e ".[test]"
     - pytest
