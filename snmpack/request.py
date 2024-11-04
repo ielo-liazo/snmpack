@@ -35,7 +35,8 @@ class SNMPRequest:
 
     def build_pdu(self, req_id=None):
         if req_id is None:
-            self.pdu.chosen["req_id"] = random.randint(1, 100000000)
+            # req_id is 4bytes
+            self.pdu.chosen["req_id"] = random.randint(1, 2**32 - 1)
         else:
             self.pdu.chosen["req_id"] = req_id
 
@@ -65,8 +66,12 @@ class SNMPRequest:
         return self.pdu
 
     def build(self, req_id=None) -> Message:
-        self.msg["version"] = Version(self.host["version"])
-        self.msg["community"] = Community(self.host["community"].encode())
+        self.msg["version"] = Version(self.host["version"], "2c")
+        try:
+            community = self.host["community"].encode()
+        except AttributeError:
+            community = "public".encode()
+        self.msg["community"] = Community(community)
         self.msg["data"] = self.build_pdu(req_id=req_id)
 
         return self.msg
